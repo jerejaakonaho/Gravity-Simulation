@@ -4,7 +4,7 @@
 
 namespace App {
 
-Particles initializeParticles(int amountOfParticles, float velocity)
+Particles initializeParticles(int amountOfParticles, float vx, float vy)
 {
     Particles particles;
 
@@ -14,8 +14,7 @@ Particles initializeParticles(int amountOfParticles, float velocity)
 
     particles.particleCount = amountOfParticles;
     particles.positions.assign(static_cast<std::size_t>(amountOfParticles), Vector2{0.0f, 0.0f});
-    particles.directions.assign(static_cast<std::size_t>(amountOfParticles), 0);
-    particles.velocities.assign(static_cast<std::size_t>(amountOfParticles), velocity);
+    particles.velocities.assign(static_cast<std::size_t>(amountOfParticles), Vector2{vx, vy});
     particles.isAlive.assign(static_cast<std::size_t>(amountOfParticles), 1);
 
     return particles;
@@ -41,5 +40,26 @@ void drawParticles(const Particles& p)
     }
 }
 
+void updateParticles(Particles& particle, const Planet& planet, float dt, float strength)
+{
+    for (size_t i = 0; i < particle.positions.size(); i++)
+    {
+        if (particle.isAlive[i] != 0)
+        {
+            // Update velocity
+            float distance_x = planet.position.x - particle.positions[i].x; 
+            float distance_y = planet.position.y - particle.positions[i].y;
+            float distance = std::sqrt(distance_x*distance_x + distance_y*distance_y);
+            float acceleration = planet.mass / (distance * distance);
+
+            particle.velocities[i].x += (distance_x / distance) * acceleration * dt;
+            particle.velocities[i].y += (distance_y / distance) * acceleration * dt;
+
+            // Update position based on new velocity
+            particle.positions[i].x += particle.velocities[i].x * dt;
+            particle.positions[i].y += particle.velocities[i].y * dt;
+        }
+    }
+}
 
 } // namespace App

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstddef>
+#include <cmath>
 
 #include "raylib.h"
 
@@ -36,7 +37,7 @@ namespace App {
     // PLANET
 
     // Initializes planet struct
-    Planet initializePlanet(float mass, Vector2 position, float gravForce, float radius);
+    Planet initializePlanet(float mass, Vector2 position, float radius);
 
     // Draws planet
     void drawPlanet(const Planet& p);
@@ -44,5 +45,22 @@ namespace App {
 
     // MAIN LOOP
 
-    void run(int amountOfParticles);
+    /*
+    *  Initialization
+    *       Calculates track of dt for consistent speed for all machines
+    *       Closes if !(isRunning)
+    *       Check if more particles are spawned
+    *  
+    *  Update the particles
+    *       - Calculate forces (gravity)
+    *       - Update speed and direction based on forces
+    *       - Position = Position + (Velocity * dt)
+    *       - If particle is inside planet or outside screen isAlive -> 0
+    * 
+    *  Render particles
+    *       - Erase old particles
+    *       - Draw the particles at new locations
+    *       - Update the window
+    */
+    void run();
 }

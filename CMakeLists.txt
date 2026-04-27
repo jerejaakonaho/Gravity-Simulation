@@ -6,6 +6,8 @@ include(FetchContent)
 set(BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
 set(BUILD_GAMES OFF CACHE BOOL "" FORCE)
 set(BUILD_SHARED_LIBS OFF CACHE BOOL "" FORCE)
+set(STDEXEC_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
+set(STDEXEC_BUILD_TESTS OFF CACHE BOOL "" FORCE)
 
 FetchContent_Declare(
     raylib
@@ -13,7 +15,14 @@ FetchContent_Declare(
     GIT_TAG 5.5
 )
 
-FetchContent_MakeAvailable(raylib)
+FetchContent_Declare(
+    stdexec
+    GIT_REPOSITORY https://github.com/nvidia/stdexec.git
+    GIT_TAG main
+    GIT_SHALLOW TRUE
+)
+
+FetchContent_MakeAvailable(raylib stdexec)
 
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -28,6 +37,14 @@ add_executable(gravity_simulation
 
 target_include_directories(gravity_simulation PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
 target_link_libraries(gravity_simulation PRIVATE raylib)
+
+if (TARGET STDEXEC::stdexec)
+    target_link_libraries(gravity_simulation PRIVATE STDEXEC::stdexec)
+elseif (TARGET stdexec)
+    target_link_libraries(gravity_simulation PRIVATE stdexec)
+elseif (DEFINED stdexec_SOURCE_DIR)
+    target_include_directories(gravity_simulation PRIVATE ${stdexec_SOURCE_DIR}/include)
+endif()
 
 if (MSVC)
     target_compile_options(gravity_simulation PRIVATE /W4 /permissive-)

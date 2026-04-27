@@ -11,11 +11,8 @@ struct Particles
     // Vector of particle positions
     std::vector<Vector2> positions;
 
-    // Vector of particle directions
-    std::vector<int> directions;
-
     // Vector of particle velocities
-    std::vector<float> velocities;
+    std::vector<Vector2> velocities;
 
     // Vector that stores the "alive" value of the particles
     std::vector<uint8_t> isAlive;
