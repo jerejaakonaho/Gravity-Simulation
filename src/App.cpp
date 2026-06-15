@@ -4,7 +4,7 @@
 
 namespace App {
 
-Particles initializeParticles(int amountOfParticles, float vx, float vy)
+Particles App::initializeParticles(int amountOfParticles, float vx, float vy)
 {
     Particles particles;
 
@@ -20,12 +20,12 @@ Particles initializeParticles(int amountOfParticles, float vx, float vy)
     return particles;
 }
 
-void drawParticle(Vector2 position)
+void App::drawParticle(Vector2 position)
 {
     DrawCircleV(position, 2.0f, WHITE);
 }
 
-void drawParticles(const Particles& p)
+void App::drawParticles(const Particles& p)
 {
     if (p.particleCount <= 0) {
         return;
@@ -40,7 +40,7 @@ void drawParticles(const Particles& p)
     }
 }
 
-void updateParticles(Particles& particle, const Planet& planet, float dt, float strength)
+void App::updateParticles(Particles& particle, const Planet& planet, float dt, float strength)
 {
     for (size_t i = 0; i < particle.positions.size(); i++)
     {
@@ -60,6 +60,19 @@ void updateParticles(Particles& particle, const Planet& planet, float dt, float 
             particle.positions[i].y += particle.velocities[i].y * dt;
         }
     }
+}
+
+bool App::areParticlesAlive(const Particles& p)
+{
+    return p.particleCount > 0;
+}
+
+Planet App::initializePlanet(float mass, Vector2 position, float radius)
+{
+    Planet planet;
+    planet.mass = mass;
+    planet.position = position;
+    planet.gravitationalForce = 
 }
 
 } // namespace App

@@ -13,7 +13,7 @@ namespace App {
     // PARTICLES
 
     // Initializes particles struct
-    Particles initializeParticles(int amountOfParticles, float velocity);
+    Particles initializeParticles(int amountOfParticles, float vx, float vy);
 
     void drawParticle(Vector2 position);
 
@@ -25,7 +25,7 @@ namespace App {
     /*
     *  Update the positions and direction of particles.
     */
-    void updateParticles(Particles& p);
+    void updateParticles(Particles& particle, const Planet& planet, float dt, float strength);
 
     /*
     *  Returns the status of particles,
